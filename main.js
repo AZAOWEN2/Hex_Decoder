@@ -1,6 +1,5 @@
 // ==UserScript==
 // @name         Hex Decoder
-// @namespace    http://tampermonkey.net/
 // @version      v1.0
 // @description  Guess it:)
 // @author       AZAOWEN
