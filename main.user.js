@@ -8,8 +8,8 @@
 // @icon         https://www.google.com/s2/favicons?sz=64&domain=vnpt.vn
 // @grant        none
 
- // @updateURL   https://raw.githubusercontent.com/AZAOWEN2/Hex_Decoder/main.user.js
- // @downloadURL https://raw.githubusercontent.com/AZAOWEN2/Hex_Decoder/main.user.js
+ // @updateURL   https://raw.githubusercontent.com/AZAOWEN2/Hex_Decoder/main/main.user.js
+ // @downloadURL https://raw.githubusercontent.com/AZAOWEN2/Hex_Decoder/main/main.user.js
 // ==/UserScript==
 
 (function () {
