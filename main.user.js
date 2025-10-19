@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Hex Decoder
 // @namespace    https://github.com/AZAOWEN2/Hex_Decoder
-// @version      1.0.0
+// @version      1.0.1
 // @description  Guess it:)
 // @author       AZAOWEN
 // @match        https://*.vnpt.vn/*
@@ -163,7 +163,6 @@
     .hex_raw {
       display: inline;
       color: blue;
-      text-decoration: underline;
     }
 
     .pmtrung_text_hidden {
