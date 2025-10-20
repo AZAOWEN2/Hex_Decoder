@@ -1,15 +1,15 @@
 // ==UserScript==
 // @name         Hex Decoder
 // @namespace    https://github.com/AZAOWEN2/Hex_Decoder
-// @version      1.0.1
+// @version      1.0.2
 // @description  Guess it:)
 // @author       AZAOWEN
 // @match        https://*.vnpt.vn/*
 // @icon         https://www.google.com/s2/favicons?sz=64&domain=vnpt.vn
 // @grant        none
 
- // @updateURL   https://raw.githubusercontent.com/AZAOWEN2/Hex_Decoder/main/main.user.js
- // @downloadURL https://raw.githubusercontent.com/AZAOWEN2/Hex_Decoder/main/main.user.js
+// @updateURL   https://raw.githubusercontent.com/AZAOWEN2/Hex_Decoder/main/main.user.js
+// @downloadURL https://raw.githubusercontent.com/AZAOWEN2/Hex_Decoder/main/main.user.js
 // ==/UserScript==
 
 (function () {
@@ -73,7 +73,6 @@
           } catch (e) {
             decoded = null;
           }
-          console.log(hex, " | ", hexToString(hex));
           highLineHex(span, hex, decoded);
         }
       });
@@ -147,6 +146,9 @@
       padding: 2px;
       margin-left: 8px;
       vertical-align: middle;
+      position: fixed;
+      top: 17.5px;
+      right: 4%;
     }
 
     .pmtrung_hex_decoded {
