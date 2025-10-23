@@ -1,3 +1,7 @@
+:root{
+  --pmtrung-cursor: url("https://raw.githubusercontent.com/AZAOWEN2/Hex_Decoder/main/assets/img/cursor.png") 16 0, auto;
+}
+
 .pmtrung_refresh_button {
   width: auto;
   height: 21px;
@@ -6,7 +10,7 @@
   color: #fff;
   border: none;
   border-radius: 4px;
-  cursor: pointer;
+  cursor: var(--pmtrung-cursor);
   font-size: 12px;
   padding: 2px;
   margin-left: 8px;
