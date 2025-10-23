@@ -1,12 +1,16 @@
 // ==UserScript==
 // @name         Hex Decoder
 // @namespace    https://github.com/AZAOWEN2/Hex_Decoder
-// @version      1.0.2
+// @version      1.0.3
 // @description  Guess it:)
 // @author       AZAOWEN
 // @match        https://*.vnpt.vn/*
 // @icon         https://www.google.com/s2/favicons?sz=64&domain=vnpt.vn
-// @grant        none
+// @connect      raw.githubusercontent.com
+
+// @resource     STYLE https://raw.githubusercontent.com/AZAOWEN2/Hex_Decoder/main/style.css
+// @grant        GM_getResourceText
+// @grant        GM_addStyle
 
 // @updateURL   https://raw.githubusercontent.com/AZAOWEN2/Hex_Decoder/main/main.user.js
 // @downloadURL https://raw.githubusercontent.com/AZAOWEN2/Hex_Decoder/main/main.user.js
@@ -15,8 +19,24 @@
 (function () {
   "use strict";
 
-  const TARGET_SEL = "#ariel\\.list\\.saveSearch_btn_okViewer";
+  const TARGET_SEL = "#ariel\\.list\\.saveSearch_btn_okViewer"; 
   const BTN_ID = "#pmtrung_refresh_button";
+
+  // For cache
+  const EXCEPT_URL =
+    "https://raw.githubusercontent.com/AZAOWEN2/Hex_Decoder/main/exceptions.json";
+  const EXCEPT_CACHE_KEY = "hex_excepts_cache";
+  const EXCEPT_CACHE_TTL_MS = 8 * 60 * 60 * 1000;
+  let exceptionsSet = new Set();
+
+  // For CSS embedded
+  const css = GM_getResourceText("STYLE");
+  GM_addStyle(css);
+
+  // Load data from json
+  (async () => {
+    exceptionsSet = await loadExceptions();
+  })();
 
   const obs = new MutationObserver(() => {
     if (document.querySelector(BTN_ID)) {
@@ -28,7 +48,6 @@
     if (el && insertButton(el)) {
       console.log("Button created (via observer)!");
       obs.disconnect();
-      customHexDecoderCSS(); // Custom CSS
     }
   });
   obs.observe(document.documentElement, { childList: true, subtree: true });
@@ -52,6 +71,9 @@
   function main() {
     const table = document.querySelector(".dashboard-grid.resizableGrid");
     if (!table) return;
+
+    const checkExited = document.querySelector(".pmtrung_hex_decode");
+    if (checkExited) { console.log("hex decoded! exit"); return};
 
     const rows = table.querySelectorAll("tbody tr");
 
@@ -80,7 +102,7 @@
   }
 
   function detectHex(value) {
-    const words = value.match(/\b[0-9A-Fa-f]+\b/g) || [];
+    const words = value.match(/\b[0-9A-F]+\b/g) || [];
     const out = new Set();
     for (const w of words) {
       if (w.length >= 2 && w.length % 2 === 0 && !/^a\d+$/i.test(w)) {
@@ -88,7 +110,34 @@
         if (bytes.every((b) => !Number.isNaN(parseInt(b, 16)))) out.add(w);
       }
     }
-    return [...out];
+    return [...out].filter((x) => !exceptionsSet.has(x));
+  }
+
+  // Fetch data from json and save
+  async function loadExceptions() {
+    // Get data from cache if valid
+    try {
+      const cached = JSON.parse(
+        localStorage.getItem(EXCEPT_CACHE_KEY) || "null"
+      );
+      if (cached && Date.now() - cached.time < EXCEPT_CACHE_TTL_MS) {
+        return new Set(cached.list);
+      }
+    } catch (e) {
+      console.log("Error from fetching data. Detail: ", e);
+    }
+
+    // If not, fetch new data
+    const resp = await fetch(EXCEPT_URL, { cache: "no-store" });
+    if (!resp.ok) throw new Error("fetch exceptions failed");
+    const list = await resp.json();
+    const upper = [...new Set(list.map((s) => String(s).toUpperCase().trim()))];
+    // And save cache
+    localStorage.setItem(
+      EXCEPT_CACHE_KEY,
+      JSON.stringify({ time: Date.now(), list: upper })
+    );
+    return new Set(upper);
   }
 
   function hexToString(hex) {
@@ -97,81 +146,44 @@
   }
 
   function highLineHex(span, hex, decoded) {
-    const full = span.textContent;
-    const idx = full.indexOf(hex);
-    if (idx === -1) return;
 
-    const before = full.slice(0, idx);
-    const match = full.slice(idx, idx + hex.length);
-    const after = full.slice(idx + hex.length);
+    span.normalize();
 
-    const wrapper = document.createElement("div");
-    wrapper.className = "pmtrung_hex_decode";
+    const textNodes = Array.from(span.childNodes).filter(
+      (n) => n.nodeType === Node.TEXT_NODE && n.nodeValue
+    );
 
-    const rawDiv = document.createElement("div");
-    rawDiv.className = "hex_raw pmtrung_text_hidden";
-    rawDiv.textContent = match;
+    for (const node of textNodes) {
+      const full = node.nodeValue;
+      const idx = full.indexOf(hex);
+      if (idx === -1) continue;
 
-    const decodedDiv = document.createElement("div");
-    decodedDiv.className = "pmtrung_hex_decoded";
-    decodedDiv.textContent = decoded;
+      const before = full.slice(0, idx);
+      const after = full.slice(idx + hex.length);
 
-    wrapper.appendChild(rawDiv);
-    wrapper.appendChild(decodedDiv);
+      const wrapper = document.createElement("div");
+      wrapper.className = "pmtrung_hex_decode";
 
-    span.innerHTML = "";
-    if (before) span.appendChild(document.createTextNode(before));
-    span.appendChild(wrapper);
-    if (after) span.appendChild(document.createTextNode(after));
+      const rawDiv = document.createElement("div");
+      rawDiv.className = "hex_raw pmtrung_text_hidden";
+      rawDiv.textContent = hex;
 
-    customHexDecoderEventsJS(wrapper); // Custom JS Events Show/Hide
-  }
+      const decodedDiv = document.createElement("div");
+      decodedDiv.className = "pmtrung_hex_decoded";
+      decodedDiv.textContent = decoded ?? "";
 
-  function customHexDecoderCSS() {
-    if (document.querySelector("#pmtrung_global_style")) return;
+      wrapper.appendChild(rawDiv);
+      wrapper.appendChild(decodedDiv);
 
-    const style = document.createElement("style");
-    style.id = "pmtrung_global_style";
-    style.textContent = `
-    .pmtrung_refresh_button {
-      width: auto;
-      height: 21px;
-      line-height: 21px;
-      background: #0d6efd;
-      color: #fff;
-      border: none;
-      border-radius: 4px;
-      cursor: pointer;
-      font-size: 12px;
-      padding: 2px;
-      margin-left: 8px;
-      vertical-align: middle;
-      position: fixed;
-      top: 17.5px;
-      right: 4%;
+      const frag = document.createDocumentFragment();
+      if (before) frag.appendChild(document.createTextNode(before));
+      frag.appendChild(wrapper);
+      if (after) frag.appendChild(document.createTextNode(after));
+
+      node.parentNode.replaceChild(frag, node);
+
+      customHexDecoderEventsJS(wrapper);
     }
-
-    .pmtrung_hex_decoded {
-      color: red;
-      display: inline;
-    }
-
-    .pmtrung_hex_decode {
-      display: inline;
-      cursor: pointer;
-      background-color: white;
-    }
-
-    .hex_raw {
-      display: inline;
-      color: blue;
-    }
-
-    .pmtrung_text_hidden {
-      display: none !important;
-    }
-  `;
-    document.head.appendChild(style);
   }
 
   function customHexDecoderEventsJS(parent) {
@@ -181,6 +193,4 @@
       });
     });
   }
-
-
 })();
