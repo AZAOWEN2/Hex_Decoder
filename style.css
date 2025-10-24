@@ -1,10 +1,12 @@
-@import url('https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@300;400;600&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@300;400;600&display=swap");
 
-:root{
-  --pmtrung-cursor: url("https://raw.githubusercontent.com/AZAOWEN2/Hex_Decoder/main/assets/img/cursor.png") 16 0, auto;
+:root {
+  --pmtrung-cursor: url("https://raw.githubusercontent.com/AZAOWEN2/Hex_Decoder/main/assets/img/cursor.png")
+      16 0,
+    auto;
   --pmtrung-linetime-color: #49a87d;
   --pmtrung-notification-inset: 1.5rem;
-  --pmtrung-linetiming: 4s;          
+  --pmtrung-linetiming: 4s;
   --pmtrung-font: "Be Vietnam Pro", sans-serif;
 }
 
@@ -50,7 +52,6 @@
   display: none !important;
 }
 
-
 /* ================================================ */
 /* ================================================ */
 /* ================= Notification ================= */
@@ -58,22 +59,21 @@
   color: rgba(0, 0, 0, 0.7);
   /* position: fixed; */
   display: flex;
-  font-size: 17px;
+  font-size: 15px;
   letter-spacing: 0;
   line-height: 120%;
   gap: 10px;
   top: 0;
   right: 0;
   /* margin: var(--pmtrung-notification-inset); */
-  width: 24rem;
+  width: 20rem;
   max-width: calc(100% - 6rem);
   background: #fff;
-  box-shadow: 0 0 0.5rem rgba(0,0,0,.25);
-  border-radius: .5rem;
+  box-shadow: 0 0 0.5rem rgba(0, 0, 0, 0.25);
+  border-radius: 0.5rem;
   z-index: 5;
   padding: 10px 20px;
   overflow: clip;
-
 
   /* Trạng thái ẨN mặc định (ngoài màn hình, mờ) */
   transform: translateX(calc(100% + var(--pmtrung-notification-inset)));
@@ -81,9 +81,8 @@
   pointer-events: none;
 
   /* Transition cho mở/đóng */
-  transition:
-    transform .45s cubic-bezier(.33,0,.66,1.33),
-    opacity   .45s ease;
+  transition: transform 0.45s cubic-bezier(0.33, 0, 0.66, 1.33),
+    opacity 0.45s ease;
   will-change: transform, opacity;
 }
 
@@ -93,12 +92,11 @@
   right: var(--pmtrung-notification-inset);
   z-index: 6;
   display: flex;
-  flex-direction: column; 
-  align-items: flex-end;  
-  gap: 12px;              
-  pointer-events: none;   
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 12px;
+  pointer-events: none;
 }
-
 
 /*  Mở   */
 .pmtrung_notification.is-open {
@@ -112,7 +110,7 @@
   content: "";
   position: absolute;
   inset: 0 0 auto;
-  height: .2rem;
+  height: 0.2rem;
   background-color: var(--pmtrung-linetime-color);
   transform-origin: left;
   animation: countdown var(--pmtrung-linetiming) linear forwards;
@@ -126,20 +124,37 @@
 }
 
 .pmtrung_notification__text {
-  margin: .3rem 0 0;
+  margin: 0.3rem 0 0;
   display: -webkit-box;
   -webkit-line-clamp: 3;
   -webkit-box-orient: vertical;
   overflow: hidden;
   text-overflow: ellipsis;
+  font-family: var(--pmtrung-font);
 }
-.pmtrung_notification__action { margin-left: auto; }
-.pmtrung_notification__icon { margin: auto; width: 30px; height: 30px; border-radius: 50%; }
+.pmtrung_notification__action {
+  margin-left: auto;
+}
+.pmtrung_notification__icon {
+  margin: auto 0;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+}
 .pmtrung_close_notification_button {
-  appearance: none; background: none; border: 0; font: inherit; margin-top: .6rem; cursor: pointer;
+  appearance: none;
+  background: none;
+  border: 0;
+  font: inherit;
+  margin-top: 0.6rem;
+  cursor: pointer;
 }
 
 @keyframes countdown {
-  from { transform: scaleX(1); }
-  to   { transform: scaleX(0); }
+  from {
+    transform: scaleX(1);
+  }
+  to {
+    transform: scaleX(0);
+  }
 }
