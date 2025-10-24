@@ -1,7 +1,16 @@
+@import url('https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@300;400;600&display=swap');
+
 :root{
   --pmtrung-cursor: url("https://raw.githubusercontent.com/AZAOWEN2/Hex_Decoder/main/assets/img/cursor.png") 16 0, auto;
+  --pmtrung-linetime-color: #49a87d;
+  --pmtrung-notification-inset: 1.5rem;
+  --pmtrung-linetiming: 4s;          
+  --pmtrung-font: "Be Vietnam Pro", sans-serif;
 }
 
+/* =============================================== */
+/* =============================================== */
+/* ================= Main Button ================= */
 .pmtrung_refresh_button {
   width: auto;
   height: 21px;
@@ -18,6 +27,7 @@
   position: fixed;
   top: 17.5px;
   right: 4%;
+  font-family: var(--pmtrung-font);
 }
 
 .pmtrung_hex_decoded {
@@ -38,4 +48,98 @@
 
 .pmtrung_text_hidden {
   display: none !important;
+}
+
+
+/* ================================================ */
+/* ================================================ */
+/* ================= Notification ================= */
+.pmtrung_notification {
+  color: rgba(0, 0, 0, 0.7);
+  /* position: fixed; */
+  display: flex;
+  font-size: 17px;
+  letter-spacing: 0;
+  line-height: 120%;
+  gap: 10px;
+  top: 0;
+  right: 0;
+  /* margin: var(--pmtrung-notification-inset); */
+  width: 24rem;
+  max-width: calc(100% - 6rem);
+  background: #fff;
+  box-shadow: 0 0 0.5rem rgba(0,0,0,.25);
+  border-radius: .5rem;
+  z-index: 5;
+  padding: 10px 20px;
+  overflow: clip;
+
+
+  /* Trạng thái ẨN mặc định (ngoài màn hình, mờ) */
+  transform: translateX(calc(100% + var(--pmtrung-notification-inset)));
+  opacity: 0;
+  pointer-events: none;
+
+  /* Transition cho mở/đóng */
+  transition:
+    transform .45s cubic-bezier(.33,0,.66,1.33),
+    opacity   .45s ease;
+  will-change: transform, opacity;
+}
+
+.pmtrung-notification-root {
+  position: fixed;
+  top: var(--pmtrung-notification-inset);
+  right: var(--pmtrung-notification-inset);
+  z-index: 6;
+  display: flex;
+  flex-direction: column; 
+  align-items: flex-end;  
+  gap: 12px;              
+  pointer-events: none;   
+}
+
+
+/*  Mở   */
+.pmtrung_notification.is-open {
+  transform: translateX(0);
+  opacity: 1;
+  pointer-events: auto;
+}
+
+/* Thanh đếm chỉ chạy khi đang mở */
+.pmtrung_notification.is-open::before {
+  content: "";
+  position: absolute;
+  inset: 0 0 auto;
+  height: .2rem;
+  background-color: var(--pmtrung-linetime-color);
+  transform-origin: left;
+  animation: countdown var(--pmtrung-linetiming) linear forwards;
+}
+
+/*  Đóng  */
+.pmtrung_notification.is-closing {
+  transform: translateX(calc(100% + var(--pmtrung-notification-inset)));
+  opacity: 0;
+  pointer-events: none;
+}
+
+.pmtrung_notification__text {
+  margin: .3rem 0 0;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.pmtrung_notification__action { margin-left: auto; }
+.pmtrung_notification__icon { margin: auto; width: 30px; height: 30px; border-radius: 50%; }
+.pmtrung_close_notification_button {
+  appearance: none; background: none; border: 0; font: inherit; margin-top: .6rem; cursor: pointer;
+}
+
+@keyframes countdown {
+  from { transform: scaleX(1); }
+  to   { transform: scaleX(0); }
 }
