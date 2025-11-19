@@ -5,7 +5,7 @@
       16 0,
     auto;
   --pmtrung-linetime-color: #49a87d;
-  --pmtrung-notification-inset: 1.5rem;
+  --pmtrung-notification-inset: 2.1rem;
   --pmtrung-linetiming: 4s;
   --pmtrung-font: "Be Vietnam Pro", sans-serif;
 }
@@ -13,23 +13,77 @@
 /* =============================================== */
 /* =============================================== */
 /* ================= Main Button ================= */
-.pmtrung_refresh_button {
+.pmtrung_decode_button {
   width: auto;
-  height: 21px;
+  height: auto;
   line-height: 21px;
-  background: #0d6efd;
-  color: #fff;
+  background: transparent;
+  color: black;
   border: none;
   border-radius: 4px;
   cursor: var(--pmtrung-cursor);
   font-size: 12px;
-  padding: 2px;
-  margin-left: 8px;
+  padding: 4px 20px;
   vertical-align: middle;
   position: fixed;
-  top: 17.5px;
+  top: 13.5px;
   right: 4%;
   font-family: var(--pmtrung-font);
+  overflow: hidden;
+  z-index: 2;
+  transition: box-shadow 0.3s linear, transform 0.5s linear;
+}
+
+.pmtrung_decode_button::before {
+  z-index: -2;
+  content: "";
+  inset: -150px;
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  animation: pmtrung_decode_animated_spinner_button 5s cubic-bezier(0.25, 0.46, 0.45, 0.94) infinite;
+  background: conic-gradient(
+      from 0deg at 50% 51.35%,
+      rgba(185, 215, 243, 0) 0deg,
+      rgba(185, 215, 243, 0) 289.4deg,
+      #ffb86c 318.05deg,
+      #ff65f2 1turn
+    ),
+    conic-gradient(
+      from 180deg at 50% 51.35%,
+      rgba(185, 215, 243, 0) 0deg,
+      rgba(185, 215, 243, 0) 287.46deg,
+      #20e3b2 325.02deg,
+      #00aefd 1turn
+    );
+}
+
+@keyframes pmtrung_decode_animated_spinner_button {
+  100% {
+    transform: translate(-50%, -50%) rotate(1turn);
+  }
+}
+
+.pmtrung_decode_button::after {
+  content: "";
+  position: absolute;
+  inset: 1.5px;
+  border-radius: inherit;
+  z-index: -1;
+   background: linear-gradient(231deg, #c05dac, #dbd297, #58689e);
+}
+
+
+.pmtrung_decode_button:hover {
+  transform: scale(1.05);
+  box-shadow: rgba(0, 0, 0, 0.3) 0px 19px 38px,
+    rgba(0, 0, 0, 0.22) 0px 15px 12px;
+}
+
+.pmtrung_decode_button:active {
+  transform: scale(0.9);
+  transition: transform 0.2s ease;
 }
 
 .pmtrung_hex_decoded {
@@ -158,3 +212,5 @@
     transform: scaleX(0);
   }
 }
+
+
