@@ -5,7 +5,7 @@
       16 0,
     auto;
   --pmtrung-linetime-color: #49a87d;
-  --pmtrung-notification-inset: 2.1rem;
+  --pmtrung-notification-inset: 1.5rem;
   --pmtrung-linetiming: 4s;
   --pmtrung-font: "Be Vietnam Pro", sans-serif;
 }
@@ -102,7 +102,7 @@
   color: blue;
 }
 
-.pmtrung_text_hidden {
+.pmtrung_hide {
   display: none !important;
 }
 
