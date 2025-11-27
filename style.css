@@ -258,7 +258,7 @@
 .pmtrung-ghost-animating {
     z-index: 5; 
     pointer-events: none; 
-    animation: ghost-explode 0.8s ease-out forwards;
+    animation: pmtrung-ghost-explode 0.8s ease-out forwards;
 }
 
 @keyframes pmtrung-ghost-explode {
