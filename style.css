@@ -1,9 +1,7 @@
 @import url("https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@300;400;600&display=swap");
 
 :root {
-  --pmtrung-cursor: url("https://raw.githubusercontent.com/AZAOWEN2/Hex_Decoder/main/assets/img/cursor.png")
-      16 0,
-    auto;
+  --pmtrung-cursor: url(https://cdn.jsdelivr.net/gh/AZAOWEN2/Hex_Decoder@main/assets/img/cursor.png) 0 0, pointer;
   --pmtrung-linetime-color: #49a87d;
   --pmtrung-notification-inset: 1.5rem;
   --pmtrung-linetiming: 4s;
@@ -89,11 +87,12 @@
 .pmtrung_hex_decoded {
   color: red;
   display: inline;
+  cursor: var(--pmtrung-cursor);
 }
 
 .pmtrung_hex_decode {
   display: inline;
-  cursor: pointer;
+  cursor: var(--pmtrung-cursor);
   background-color: white;
 }
 
@@ -152,7 +151,7 @@
   pointer-events: none;
 }
 
-/*  Mở   */
+/*  Mở  */
 .pmtrung_notification.is-open {
   transform: translateX(0);
   opacity: 1;
@@ -201,7 +200,7 @@
   border: 0;
   font: inherit;
   margin-top: 0.6rem;
-  cursor: pointer;
+  cursor: var(--pmtrung-cursor);
 }
 
 @keyframes countdown {
@@ -214,3 +213,62 @@
 }
 
 
+/*  box pop up  */
+.pmtrung-decode-contextual-popup {
+  position: absolute;
+  display: block;
+  text-shadow: -1px 2px 2px #5959599c;
+  background: white;
+  border-radius: 6px;
+  padding: 8px 12px;
+  box-shadow: rgba(0, 0, 0, 0.56) 0px 22px 70px 4px;
+  border: 1px solid #ddd;
+  z-index: 200;
+  font-size: 14px;
+  white-space: pre-wrap;
+  transform: translateX(-50%);
+  overflow-wrap: break-word;
+  overflow: auto;
+  word-break: break-word;
+  animation: pmtrung_slideFade 0.35s ease-in-out;
+}
+
+@keyframes pmtrung_slideFade {
+  from { opacity: 0; margin-top: -5px; }
+  to   { opacity: 1; margin-top: 0; }
+}
+
+
+/*  Log Format  */
+.pmtrung-log-format {
+  margin-left: 20px;
+  display: inline-flex;
+  align-items: center;
+  column-gap: 3px;
+  position: relative;
+  bottom: -3.5px;
+  cursor: var(--pmtrung-cursor);
+}
+
+.pmtrung-log-format-icon{
+  width: 18px;
+  height: 18px;
+}
+
+.pmtrung-ghost-animating {
+    z-index: 5; 
+    pointer-events: none; 
+    animation: ghost-explode 0.8s ease-out forwards;
+}
+
+@keyframes pmtrung-ghost-explode {
+    0% {
+        transform: scale(1);
+        opacity: 0.8;
+    }
+    100% {
+        transform: scale(1.6); 
+        opacity: 0;            
+        filter: blur(4px);     
+    }
+}
