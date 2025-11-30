@@ -42,11 +42,6 @@
       type: "image",
     },
 
-    exceptions: {
-      url: "https://cdn.jsdelivr.net/gh/AZAOWEN2/Hex_Decoder@main/exceptions.json",
-      type: "data",
-    },
-
     // script:  { url: 'https://example.com/script.js', type: 'script' },
     // style:   { url: 'https://example.com/style.css', type: 'style' },
   };
