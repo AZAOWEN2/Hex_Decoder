@@ -25,11 +25,15 @@
   vertical-align: middle;
   position: fixed;
   top: 13.5px;
-  right: 10%;
+  right: 15%;
   font-family: var(--pmtrung-font);
   overflow: hidden;
-  z-index: 2;
+  z-index: 4;
   transition: box-shadow 0.3s linear, transform 0.5s linear;
+}
+
+.pmtrung_decode_button.pmtrung-siem-custom{
+   top: 0%;
 }
 
 .pmtrung_decode_button::before {
@@ -90,15 +94,27 @@
   cursor: var(--pmtrung-cursor);
 }
 
+.pmtrung_hex_decoded.hex-decoded-dark{
+  color: #fff900;
+}
+
 .pmtrung_hex_decode {
   display: inline;
   cursor: var(--pmtrung-cursor);
   background-color: white;
 }
 
+.pmtrung_hex_decode.wrapper-dark{
+  background-color: transparent;
+}
+
 .hex_raw {
   display: inline;
   color: blue;
+}
+
+.hex_raw.hex-raw-dark{
+  color: #73caff;
 }
 
 .pmtrung_hide {
@@ -271,4 +287,9 @@
         opacity: 0;            
         filter: blur(4px);     
     }
+}
+
+/*  Copy col  */
+.pmtrung-copy-icon{
+  cursor: var(--pmtrung-cursor);
 }
