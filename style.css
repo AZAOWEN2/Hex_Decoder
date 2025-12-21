@@ -257,6 +257,7 @@
 
 /*  Log Format  */
 .pmtrung-log-format {
+  color: #000;
   margin-left: 20px;
   display: inline-flex;
   align-items: center;
