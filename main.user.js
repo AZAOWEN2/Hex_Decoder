@@ -46,15 +46,6 @@
     // style:   { url: 'https://example.com/style.css', type: 'style' },
   };
 
-  //Error Code Generator
-  const usedErrorCode = new Set();
-  function errorCode() {
-    let n;
-    do n = Math.floor(Math.random()*90000) + 10000; while (usedErrorCode.has(n));
-    usedErrorCode.add(n);
-    return n;
-  }
-
   function observeCenter(selector, Func1, Func2, options = {}) {
     const { root = document.documentElement, timeout = 60000, forever = false } = options;
 
@@ -80,10 +71,11 @@
   observeCenter("#defaultTable", (el) => {
     PAGE_EVENTVIEWER = el.ownerDocument;
     insertNotification();
-    insertDecodeButton("Event_List");
+    // insertDecodeButton("Event_List");
 
     observeCenter("#spinner_display", (el) => {
       observeCenter("#defaultTable", insertCopyColIcon, (el2) => {
+        insertDecodeButton("Event_List");
         observeCenter("#defaultTable",insertCopyColIcon, (el3) => {
           console.log("RECREATE copy icon");
         }, {root: PAGE_EVENTVIEWER.querySelector("#tableSection"), forever: true });
@@ -118,6 +110,7 @@
   function createDecodeButton(classify) {
     const btn = document.createElement("button");
     btn.id = btn.className = "pmtrung_decode_button";
+    if(window.location.hostname.includes("siem")) btn.classList.add('pmtrung-siem-custom');
     btn.textContent = "Ấn zô để ấy";
     switch (classify) {
       case "Event_List":
@@ -130,9 +123,8 @@
 
       default:
         btn.addEventListener("click", () => {
-          const code = errorCode();
-          showNotification(`[${code}] Lỗi sử lý! Vui lòng tải lại trang.`, false);
-          console.log(`[${code}]: Lỗi không nhận dạng được phân loại cho #pmtrung_decode_button:`, classify)
+          showNotification(`Lỗi sử lý! Vui lòng tải lại trang.`, false);
+          console.log(`Lỗi không nhận dạng được phân loại cho #pmtrung_decode_button:`, classify)
         });
     }
     return btn;
@@ -148,7 +140,7 @@
     const rows = table.querySelectorAll("tbody tr");
 
     for (const tr of rows) {
-      const td = tr.querySelector('td[propertylabel*="Command"], td[propertylabel*="audit_proctitle"]');
+      const td = tr.querySelector('td[propertylabel*="Command"], td[propertylabel*="audit_proctitle"], td[propertyname*="Command"], td[propertyname*="audit_proctitle"]');
       if (!td) continue;
 
       const spans = td.querySelectorAll("span");
@@ -248,6 +240,7 @@
   }
 
   function highLineHex(span, hex, decoded) {
+    const bgColor = checkBackground(PAGE_EVENTVIEWER);
     span.normalize();
 
     const textNodes = Array.from(span.childNodes).filter(
@@ -262,19 +255,22 @@
       const before = full.slice(0, idx);
       const after = full.slice(idx + hex.length);
 
-      const wrapper = document.createElement("div");
+      const wrapper = document.createElement("span");
       wrapper.className = "pmtrung_hex_decode";
+      if(bgColor) wrapper.classList.add('wrapper-dark')
 
-      const rawDiv = document.createElement("div");
-      rawDiv.className = "hex_raw pmtrung_hide";
-      rawDiv.textContent = hex;
+      const rawHex = document.createElement("span");
+      rawHex.className = "hex_raw pmtrung_hide";
+      if(bgColor) rawHex.classList.add('hex-raw-dark')
+      rawHex.textContent = hex;
 
-      const decodedDiv = document.createElement("div");
-      decodedDiv.className = "pmtrung_hex_decoded";
-      decodedDiv.textContent = decoded ?? "";
+      const decodedHex = document.createElement("span");
+      decodedHex.className = "pmtrung_hex_decoded";
+      if(bgColor) decodedHex.classList.add('hex-decoded-dark')
+      decodedHex.textContent = decoded ?? "";
 
-      wrapper.appendChild(rawDiv);
-      wrapper.appendChild(decodedDiv);
+      wrapper.appendChild(rawHex);
+      wrapper.appendChild(decodedHex);
 
       const frag = document.createDocumentFragment();
       if (before) frag.appendChild(document.createTextNode(before));
@@ -289,10 +285,29 @@
 
   function customHexDecoderEventsJS(parent) {
     parent.addEventListener("click", () => {
-      parent.querySelectorAll("div").forEach((child) => {
+      parent.querySelectorAll("span").forEach((child) => {
         child.classList.toggle("pmtrung_hide");
       });
     });
+  }
+
+  function checkBackground(doc) {
+      const bgColor = window.getComputedStyle(doc.body).backgroundColor;
+
+      if (bgColor === 'rgba(0, 0, 0, 0)' || bgColor === 'transparent')  return false; 
+      
+      const rgb = bgColor.match(/\d+/g);
+      
+      if (!rgb) return false; 
+
+      const r = parseInt(rgb[0]);
+      const g = parseInt(rgb[1]);
+      const b = parseInt(rgb[2]);
+
+      // Green > Red > Blue
+      const brightness = Math.round(((r * 299) + (g * 587) + (b * 114)) / 1000);
+
+      return brightness < 128;
   }
   // -------------------------------------
 
@@ -397,7 +412,7 @@
   // -------------------------------------
   // Copy Col
   function insertCopyColIcon(table) {
-    if (!table || PAGE_EVENTVIEWER.querySelector(".pmtrung_copy_icon")) return false;
+    if (!table || PAGE_EVENTVIEWER.querySelector(".pmtrung-copy-icon")) return false;
     const headTable = table.querySelectorAll("thead tr th");
     if (!headTable) return false;
     headTable.forEach(th => {
@@ -408,13 +423,13 @@
 
   function createCopyColIcon(){
     const icon = document.createElement("div");
-    icon.id = icon.className = "pmtrung_copy_icon";
+    icon.id = icon.className = "pmtrung-copy-icon";
     icon.textContent = "📋";
     return icon;
   }
 
   function copyColAction() {
-    PAGE_EVENTVIEWER.querySelectorAll(".pmtrung_copy_icon").forEach((icon, colIndex) => {
+    PAGE_EVENTVIEWER.querySelectorAll(".pmtrung-copy-icon").forEach((icon, colIndex) => {
       icon.addEventListener("click", () => {
         const table = icon.closest("table");
         const rows = table.querySelectorAll("tbody tr");
@@ -627,7 +642,7 @@
   function isBase64ValidUincode(bytes, unicode) {
     switch(unicode){
       case "UTF-16":{
-        // ===== Heuristic: Count NULL bytes to guess UTF-16LE =====
+        // NULL bytes
         const zeroCount = bytes.filter(b => b === 0).length;
         const zeroRatio = zeroCount / bytes.length;
 
@@ -748,6 +763,11 @@
         } else {
           return rawlog.replace(/[\r\n\t]+/g, ' ').replace(/ (\[)/g, '\n$1').replace(/ (")/g, '\n$1').replace(/ (\d{1,3}(?:\.\d{1,3}){3}(?::\d+)? \- \-)/g, '\n$1');
         }
+
+      case rawlog.substring(0, 100).includes("ASM:"):
+        return rawlog.replace(/[\r\n\t]+/g, ' ').replace(/( ASM:)/, '$1\n').replace(/,(?=[a-z_0-9]+=")/g, '\n').replace(/\\r\\n/g, '\n\t').replace(/\nrequest="/g, '\nrequest:\n\t').replace(/"(\nresponse=)/g, '$1').replace(/(\n\tCookie: )(.*)/g, (match, label, content) => {
+            return label + content.replace(/; /g, '\n\t\t');
+        });
 
       default:
         showNotification("Chưa hỗ trợ format log này!", false);
