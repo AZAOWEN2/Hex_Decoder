@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Hex Decoder (Beta)
 // @namespace    https://github.com/AZAOWEN2/Hex_Decoder
-// @version      2.0.0
+// @version      2.0.1
 // @description  Nothing 
 // @author       AZAOWEN
 // @match        https://*.vnpt.vn/*
