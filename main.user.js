@@ -14,8 +14,8 @@
 // @grant        GM_getResourceText
 // @grant        GM_addStyle
 
-// @updateURL   https://cdn.jsdelivr.net/gh/AZAOWEN2/Hex_Decoder@main/main.user.js
-// @downloadURL https://cdn.jsdelivr.net/gh/AZAOWEN2/Hex_Decoder@main/main.user.js
+// @updateURL    https://cdn.jsdelivr.net/gh/AZAOWEN2/Hex_Decoder@main/main.user.js
+// @downloadURL  https://cdn.jsdelivr.net/gh/AZAOWEN2/Hex_Decoder@main/main.user.js
 // ==/UserScript==
 
 (function () {
@@ -435,7 +435,8 @@
     PAGE_EVENTVIEWER.querySelectorAll(".pmtrung-copy-icon").forEach((icon, colIndex) => {
       icon.addEventListener("click", () => {
         const table = icon.closest("table");
-        const rows = table.querySelectorAll("tbody tr");
+        const rowsSelected = table.querySelectorAll("tbody tr.datarowselected");
+        const rows = rowsSelected.length > 1 ? rowsSelected : table.querySelectorAll("tbody tr");
         let values = new Set();
 
         rows.forEach((row) => {
