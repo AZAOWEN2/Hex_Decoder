@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Hex Decoder (Beta)
 // @namespace    https://github.com/AZAOWEN2/Hex_Decoder
-// @version      2.0.1
+// @version      2.1.0
 // @description  Nothing 
 // @author       AZAOWEN
 // @match        https://*.vnpt.vn/*
@@ -71,15 +71,18 @@
   observeCenter("#defaultTable", (el) => {
     PAGE_EVENTVIEWER = el.ownerDocument;
     insertNotification();
-    // insertDecodeButton("Event_List");
-
+    // insertDecodeButton("Event_List"); .searchProgress
     observeCenter("#spinner_display", (el) => {
       observeCenter("#defaultTable", insertCopyColIcon, (el2) => {
-        insertDecodeButton("Event_List");
+        insertDecodeButton("Event_List"); 
         observeCenter("#defaultTable",insertCopyColIcon, (el3) => {
           console.log("RECREATE copy icon");
         }, {root: PAGE_EVENTVIEWER.querySelector("#tableSection"), forever: true });
       }, {root: PAGE_EVENTVIEWER.documentElement});
+    }, false, {root: PAGE_EVENTVIEWER.documentElement});
+    
+    observeCenter(".searchProgress", (el) => {
+      el.id = "spinner_display";
     }, false, {root: PAGE_EVENTVIEWER.documentElement});
 
   }); 
@@ -110,7 +113,6 @@
   function createDecodeButton(classify) {
     const btn = document.createElement("button");
     btn.id = btn.className = "pmtrung_decode_button";
-    if(window.location.hostname.includes("siem")) btn.classList.add('pmtrung-siem-custom');
     btn.textContent = "Ấn zô để ấy";
     switch (classify) {
       case "Event_List":
@@ -465,7 +467,9 @@
           values.add(result.trim());
         });
 
-        const textToCopy = [...values].join(prompt("Kiểu nối chuỗi:"));
+        let inputSep = prompt("Kiểu nối chuỗi:");
+        if (inputSep === null) return;
+        const textToCopy = [...values].join(inputSep.replace(/\\n/g, "\n").replace(/\\t/g, "\t"));
         navigator.clipboard
           .writeText(textToCopy)
           .then(() => {
