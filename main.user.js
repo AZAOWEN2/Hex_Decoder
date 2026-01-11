@@ -1,20 +1,21 @@
 // ==UserScript==
 // @name         Hex Decoder (Beta)
 // @namespace    https://github.com/AZAOWEN2/Hex_Decoder
-// @version      2.1.0
+// @version      2.1.1
 // @description  Nothing 
 // @author       AZAOWEN
 // @match        https://*.vnpt.vn/*
 // @icon         https://www.google.com/s2/favicons?sz=64&domain=vnpt.vn
 // @connect      raw.githubusercontent.com
+// @connect      cdn.jsdelivr.net
 // @connect      fonts.googleapis.com
 
-// @resource     STYLE https://raw.githubusercontent.com/AZAOWEN2/Hex_Decoder/main/style.css
+// @resource     STYLE https://cdn.jsdelivr.net/gh/AZAOWEN2/Hex_Decoder@main/style.css
 // @grant        GM_getResourceText
 // @grant        GM_addStyle
 
-// @updateURL   https://raw.githubusercontent.com/AZAOWEN2/Hex_Decoder/main/main.user.js
-// @downloadURL https://raw.githubusercontent.com/AZAOWEN2/Hex_Decoder/main/main.user.js
+// @updateURL   https://cdn.jsdelivr.net/gh/AZAOWEN2/Hex_Decoder@main/main.user.js
+// @downloadURL https://cdn.jsdelivr.net/gh/AZAOWEN2/Hex_Decoder@main/main.user.js
 // ==/UserScript==
 
 (function () {
