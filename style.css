@@ -233,6 +233,10 @@
 .pmtrung-decode-contextual-popup {
   position: absolute;
   display: block;
+  max-height: 500px;
+  max-width: 500px;
+  resize: both;
+  overflow: auto;
   text-shadow: -1px 2px 2px #5959599c;
   color: #000;
   background: white;
@@ -245,9 +249,16 @@
   white-space: pre-wrap;
   transform: translateX(-50%);
   overflow-wrap: break-word;
-  overflow: auto;
   word-break: break-word;
   animation: pmtrung_slideFade 0.35s ease-in-out;
+}
+
+.pmtrung-decode-contextual-popup[style*="width"] {
+    max-width: none !important;
+}
+
+.pmtrung-decode-contextual-popup[style*="height"] {
+    max-height: none !important;
 }
 
 @keyframes pmtrung_slideFade {
