@@ -85,11 +85,41 @@
   transition: transform 0.2s ease;
 }
 
+/* Auto Mode */
+.pmtrung_decode_button.auto {
+  color: #ffffff ;
+  background-color: #ff4757 ;
+  font-weight: bold ;
+  box-shadow: 0 4px 15px rgba(255, 71, 87, 0.4);
+}
+
+.pmtrung_decode_button.auto::after {
+  background-color: #b71540 ;
+  background-image: linear-gradient(120deg, transparent 30%, rgba(255, 255, 255, 0.6) 50%, transparent 70%);
+  animation: pmtrung-scanner-loop 2s linear infinite;
+  background-size: 200% 100%;
+}
+
+@keyframes pmtrung-scanner-loop {
+  0% {
+      background-position: 100% 0;
+  }
+  100% {
+      background-position: -100% 0;
+  }
+}
+
+.pmtrung_decode_button.auto::before{
+  content: none;
+}
+
 .pmtrung_hex_decoded {
   color: red;
   display: inline;
   cursor: var(--pmtrung-cursor);
 }
+/* -------- */
+
 
 .pmtrung_hex_decoded.hex-decoded-dark{
   color: #fff900;

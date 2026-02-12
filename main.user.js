@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Hex Decoder (Beta)
 // @namespace    https://github.com/AZAOWEN2/Hex_Decoder
-// @version      2.1.1
+// @version      2.1.2
 // @description  Nothing 
 // @author       AZAOWEN
 // @match        https://*.vnpt.vn/*
@@ -26,6 +26,10 @@
 
   //For loaded document
   let PAGE_EVENTVIEWER;
+
+  //For Auto Mode
+  let autoObserver = null;       
+  let autoDebounceTimer = null;
 
   // For data preload
   const totalLink = {
@@ -115,22 +119,62 @@
     const btn = document.createElement("button");
     btn.id = btn.className = "pmtrung_decode_button";
     btn.textContent = "Ấn zô để ấy";
-    switch (classify) {
-      case "Event_List":
-        btn.addEventListener("click", () => hexDecodeAction());
-        break;
+    
+    const RUN = () => {
+        switch (classify) {
+            case "Event_List":
+                hexDecodeAction();
+                break;
+            case "Details_Event":
+                // if (typeof base64DecodeAction === 'function') base64DecodeAction();
+                break;
+            default:
+                showNotification(`Lỗi xử lý! Vui lòng tải lại trang.`, false);
+                console.log(`Lỗi không nhận dạng được phân loại:`, classify);
+        }
+    };
 
-      case "Details_Event":
-        // btn.addEventListener("click", () => base64DecodeAction());
-        break;
+    let timer;
+    btn.onmousedown = () => {
+        timer = setTimeout(() => {
+            timer = null;
+            toggleAutoMode(btn, RUN); 
+        }, 800);
+    };
+    btn.onmouseup = btn.onmouseleave = (e) => {
+        if (timer) {
+            clearTimeout(timer); 
+            timer = null;
+            if (!autoObserver) {RUN();};
+        }
+    };
 
-      default:
-        btn.addEventListener("click", () => {
-          showNotification(`Lỗi sử lý! Vui lòng tải lại trang.`, false);
-          console.log(`Lỗi không nhận dạng được phân loại cho #pmtrung_decode_button:`, classify)
-        });
-    }
     return btn;
+  }
+
+  //Auto
+  function toggleAutoMode(btn, decodeCallback) {
+    GhostAnimation(btn);
+    if (!autoObserver) {
+        btn.textContent = "AUTO";
+        btn.classList.add("auto");
+
+        const onTableChange = () => {
+            clearTimeout(autoDebounceTimer);
+            autoDebounceTimer = setTimeout(() => {
+                console.log("Auto Decode Triggered!");
+                decodeCallback();
+            }, 200);
+        };
+
+        autoObserver = observeCenter("#defaultTable", onTableChange, false, { root: PAGE_EVENTVIEWER.documentElement, forever: true });
+        decodeCallback();
+    } else {
+        btn.textContent = "Ấn zô để ấy";
+        btn.classList.remove("auto");
+        autoObserver.disconnect();
+        autoObserver = null;
+    }
   }
 
   function hexDecodeAction() {
@@ -590,6 +634,7 @@
 
     return true;
   }
+
   // -------------------------------------
 
 
