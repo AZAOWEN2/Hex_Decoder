@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Hex Decoder (Beta)
 // @namespace    https://github.com/AZAOWEN2/Hex_Decoder
-// @version      2.1.2
+// @version      2.1.4
 // @description  Nothing 
 // @author       AZAOWEN
 // @match        https://*.vnpt.vn/*
@@ -331,31 +331,24 @@
   }
 
   function customHexDecoderEventsJS(parent) {
+    let startTime = 0;
+
+    parent.addEventListener("mousedown", () => {
+      startTime = new Date().getTime();
+    });
     parent.addEventListener("click", () => {
-      parent.querySelectorAll("span").forEach((child) => {
-        child.classList.toggle("pmtrung_hide");
+    const endTime = new Date().getTime();
+
+    if (endTime - startTime > 200) {
+      return;
+    }
+
+    parent.querySelectorAll("span").forEach((child) => {
+      child.classList.toggle("pmtrung_hide");
       });
     });
   }
 
-  function checkBackground(doc) {
-      const bgColor = window.getComputedStyle(doc.body).backgroundColor;
-
-      if (bgColor === 'rgba(0, 0, 0, 0)' || bgColor === 'transparent')  return false; 
-      
-      const rgb = bgColor.match(/\d+/g);
-      
-      if (!rgb) return false; 
-
-      const r = parseInt(rgb[0]);
-      const g = parseInt(rgb[1]);
-      const b = parseInt(rgb[2]);
-
-      // Green > Red > Blue
-      const brightness = Math.round(((r * 299) + (g * 587) + (b * 114)) / 1000);
-
-      return brightness < 128;
-  }
   // -------------------------------------
 
 
@@ -825,6 +818,29 @@
         return false;
     }
   }
+  // -------------------------------------
+
+
+  //--------------------------------------
+  // Others
+  function checkBackground(doc) {
+      const bgColor = window.getComputedStyle(doc.body).backgroundColor;
+
+      if (bgColor === 'rgba(0, 0, 0, 0)' || bgColor === 'transparent')  return false; 
+      
+      const rgb = bgColor.match(/\d+/g);
+      
+      if (!rgb) return false; 
+
+      const r = parseInt(rgb[0]);
+      const g = parseInt(rgb[1]);
+      const b = parseInt(rgb[2]);
+
+      // Green > Red > Blue
+      const brightness = Math.round(((r * 299) + (g * 587) + (b * 114)) / 1000);
+
+      return brightness < 128;
+  }
 
   function GhostAnimation(element) {
     const ghost = element.cloneNode(true);
@@ -846,6 +862,7 @@
         ghost.remove();
     }, 800);
   }
-  // -------------------------------------
+
+  //--------------------------------------
 
 })();
