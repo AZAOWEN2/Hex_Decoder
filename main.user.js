@@ -1,8 +1,8 @@
 // ==UserScript==
 // @name         Hex Decoder (Beta)
 // @namespace    https://github.com/AZAOWEN2/Hex_Decoder
-// @version      2.1.4
-// @description  Nothing 
+// @version      2.1.5
+// @description  Nothing
 // @author       AZAOWEN
 // @match        https://*.vnpt.vn/*
 // @icon         https://www.google.com/s2/favicons?sz=64&domain=vnpt.vn
@@ -17,6 +17,8 @@
 // @updateURL    https://cdn.jsdelivr.net/gh/AZAOWEN2/Hex_Decoder@main/main.user.js
 // @downloadURL  https://cdn.jsdelivr.net/gh/AZAOWEN2/Hex_Decoder@main/main.user.js
 // ==/UserScript==
+
+//Hướng dẫn chi tiết và thông tin cập nhật: https://github.com/AZAOWEN2/Hex_Decoder/blob/main/README.md
 
 (function () {
   "use strict";
@@ -277,7 +279,7 @@
     const HASH_LENGTHS = new Set([32, 40, 64, 128]);
     const density = validCount / decodedStr.length;
 
-    // Strict mode: > 90%
+    // Strict mode: > 80%
     if (HASH_LENGTHS.has(originHexLength)) {
       return density >= 0.8;
     }
@@ -334,10 +336,11 @@
     let startTime = 0;
 
     parent.addEventListener("mousedown", () => {
-      startTime = new Date().getTime();
+      startTime = Date.now();
     });
+
     parent.addEventListener("click", () => {
-    const endTime = new Date().getTime();
+    const endTime = Date.now();
 
     if (endTime - startTime > 200) {
       return;
@@ -588,9 +591,19 @@
     SelectedText.deleteContents();
     SelectedText.insertNode(Wrapper);
 
+    let startTime = 0;
+
+    Wrapper.addEventListener("mousedown", () => {
+      startTime = Date.now(); 
+    });
+
 
     // Restore
     Wrapper.addEventListener("click", function restoreOriginal() {
+      if (Date.now() - startTime > 200) {
+        return;
+      }
+
       const parent = Wrapper.parentNode;
       const originalText = Wrapper.getAttribute("old-data");
 
@@ -677,7 +690,7 @@
       
     } catch {
       console.log("Lỗi giải mã với mã hóa ký tự UTF-8! Không hỗ trợ loại Base64 này. Kết thúc giải mã.");
-      showNotification("Lỗi giải mã Base64! ", false);
+      showNotification("Lỗi giải mã! ", false);
     }
     
     return false;
