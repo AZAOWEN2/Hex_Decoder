@@ -20,7 +20,7 @@ This tool is still in a BETA version. I'm trying to update at least every quarte
 and improvements: 
  - Added new log format: ASM
  - Copy column is now can copy <b>Selected Row</b>, auto <b>Remove Duplicates</b> and support <b>Escape Characters: \n \t</b>
- - Copy data inline: Fixed an issue where copying highlighted text was difficult due to the UI toggling between encoded and decoded views. I’ve added a delay to better distinguish between a <b>Sopy action</b> and a <b>Simple click</b>.!
+ - Copy data inline: Fixed an issue where copying highlighted text was difficult due to the UI toggling between encoded and decoded views. I’ve added a delay to better distinguish between a <b>Copy action</b> and a <b>Simple click</b>.!
  - Fix UI in dark theme.
  - Fix frame size for BASE64 POP UP. <br> <br>
 
