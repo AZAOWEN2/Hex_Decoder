@@ -57,7 +57,7 @@ Once the base is installed, let's move to the core. Paste this link directly int
 https://cdn.jsdelivr.net/gh/AZAOWEN2/Hex_Decoder@main/main.user.js
 ```
 
-By default, Tampermonkey automatically checks for updates daily. However, due to occasional functional issues, it may fail or delayed. Therefore, here are two ways to manually update to the latest scripts:<br>
+By default, Tampermonkey automatically checks for updates daily. However, due to occasional functional issues, it may fail or be delayed. Therefore, here are two ways to manually update to the latest scripts:<br>
 <div align="center">
 <b>Update via the pinned extension icon in the browser toolbar:</b><br>
 		<img src="assets/img/update1.png">
