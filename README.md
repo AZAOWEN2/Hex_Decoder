@@ -14,7 +14,7 @@ The main purpose is to decode HEX, while it contains some other small features t
  - Format Log.<br>
 
 ## 🌟 Anything new... or 🛠️ improvements?
-This tool is still in a BETA version. I'm trying to update at least every quarter something new based on feedback I revieved. The latest version is now <u><b>2.1.5</u></b> comes with new features:<br>
+This tool is still in a BETA version. I'm trying to update at least every quarter something new based on feedback I revieved. The latest version is now <u><b>2.1.6</u></b> comes with new features:<br>
  - AUTO mode: Press and hold "Bấm zô để ấy" for about 1 second to enter AUTO mode. Note that this function is limited to the current tab and applies to individual searches. Repeat the action to disable.
 
 and improvements: 

@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Hex Decoder (Beta)
 // @namespace    https://github.com/AZAOWEN2/Hex_Decoder
-// @version      2.1.5
+// @version      2.1.6
 // @description  Nothing
 // @author       AZAOWEN
 // @match        https://*.vnpt.vn/*
@@ -18,7 +18,7 @@
 // @downloadURL  https://cdn.jsdelivr.net/gh/AZAOWEN2/Hex_Decoder@main/main.user.js
 // ==/UserScript==
 
-//Hướng dẫn chi tiết và thông tin cập nhật: https://github.com/AZAOWEN2/Hex_Decoder/blob/main/README.md
+//Hướng dẫn cài chi tiết và thông tin cập nhật ==> https://github.com/AZAOWEN2/Hex_Decoder/blob/main/README.md
 
 (function () {
   "use strict";
@@ -39,6 +39,7 @@
       url: "https://cdn.jsdelivr.net/gh/AZAOWEN2/Hex_Decoder@main/assets/video/successVideo.mp4",
       type: "video",
     },
+    
     warningVideo: {
       url: "https://cdn.jsdelivr.net/gh/AZAOWEN2/Hex_Decoder@main/assets/video/warningVideo.mp4",
       type: "video",
@@ -48,9 +49,6 @@
       url: "https://cdn.jsdelivr.net/gh/AZAOWEN2/Hex_Decoder@main/assets/img/formatIcon.gif",
       type: "image",
     },
-
-    // script:  { url: 'https://example.com/script.js', type: 'script' },
-    // style:   { url: 'https://example.com/style.css', type: 'style' },
   };
 
   function observeCenter(selector, Func1, Func2, options = {}) {
@@ -189,24 +187,26 @@
     const rows = table.querySelectorAll("tbody tr");
 
     for (const tr of rows) {
-      const td = tr.querySelector('td[propertylabel*="Command"], td[propertylabel*="audit_proctitle"], td[propertyname*="Command"], td[propertyname*="audit_proctitle"]');
-      if (!td) continue;
+      const tds = tr.querySelectorAll('td[propertylabel*="Command"], td[propertylabel*="audit_proctitle"], td[propertyname*="Command"], td[propertyname*="audit_proctitle"]');
+      if (!tds || tds.length === 0 ) break;
 
-      const spans = td.querySelectorAll("span");
-      const span = spans.length ? spans[spans.length - 1] : td;
+      for (const td of tds) {
+        const spans = td.querySelectorAll("span");
+        const span = spans.length ? spans[spans.length - 1] : td;
 
-      const value = span.textContent.trim();
-      if (!value) continue;
+        const value = span.textContent.trim();
+        if (!value) continue;
 
-      const list_Hex = detectHex(value);
+        const list_Hex = detectHex(value);
 
-      if(!list_Hex) return;
+        if(!list_Hex) return;
 
-      list_Hex.forEach((hex) => {
-        let decoded = hexToString(hex);
-        if (!decoded) return;
-        highLineHex(span, hex, decoded);
-      });
+        list_Hex.forEach((hex) => {
+          let decoded = hexToString(hex);
+          if (!decoded) return;
+          highLineHex(span, hex, decoded);
+        });
+      }
     }
   }
 
